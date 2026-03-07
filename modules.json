@@ -1,0 +1,22 @@
+{
+  "modules": [
+    "stock.js",
+    "heatmap.js",
+    "tilemap.js", 
+    "streamgraph.js",
+    "solid-gauge.js",
+    "series-label.js",
+    "data.js",
+    "drilldown.js",
+    "sankey.js",
+    "dependency-wheel.js",
+    "annotations.js",
+    "exporting.js",
+    "export-data.js",
+    "accessibility.js",
+    "parallel-coordinates.js"
+  ],
+  "sources": {
+    "highcharts": "https://code.highcharts.com/zips/Highcharts-12.5.0.zip"
+  }
+}

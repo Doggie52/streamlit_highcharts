@@ -1,69 +1,101 @@
 # streamlit-highcharts
 
-Simple wrapper for Highcharts JS libs
+A Streamlit component for Highcharts with dynamic module management.
 
-## Installation instructions 
+This is a fork of [aalteirac/streamlit_highcharts](https://github.com/aalteirac/streamlit_highcharts) with the following new features:
+ * Support Highcharts Stock charts (pass `chart_type="stock"` to `streamlit_highcharts`)
+ * Local Highcharts javascript includes (to avoid CDN fair usage violation)
+ * User-specified selection of Highcharts version to download
+ * User-specified selection of Highcharts modules to include
+ * Fixes for race conditions when displaying multiple charts
 
-```sh
-pip install streamlit-highcharts
-```
+## Installation
 
-## Tips
+1. Clone the repository
+2. Edit `modules.json`
+3. Run `python build_assets.py`
 
-For chart definition, please refer to https://www.highcharts.com/demo
-You'll find a lot of samples, just copy the JS definition as JSON and think about the following:
-- Convert in pure JSON, all keys must be in double quote, you can use https://jsonformatter.curiousconcept.com/#
-- Replace boolean values true or false by Python correct values True or False
-- Double quote "null" values
-- Remove any JS functions
-- Make data dynamic :-)
-
-## Sample Streamlit Application
-
-https://aalteirac-streamlit-highcharts-test-app-main-3vgde6.streamlitapp.com/
-
-## Usage 
+## Quick Start
 
 ```python
 import streamlit as st
-import streamlit_highcharts as hct
+from streamlit_highcharts import streamlit_highcharts
 
-chart_def={
-   "title":{
-      "text":"Sales of petroleum products March, Norway",
-      "align":"left"
-   },
-   "xAxis":{
-      "categories":["Jet fuel","Duty-free diesel"]
-   },
-   "yAxis":{
-      "title":{"text":"Million liter"}
-   },
-   "series":[
-        {"type":"column",
-            "name":"2020",
-            "data":[59,83]},
-        {"type":"column",
-            "name":"2021",
-            "data":[24,79]
-        },
-        {"type":"column",
-            "name":"2022",
-            "data":[58,88]
-        },
-        {"type":"spline",
-            "name":"Average",
-            "data":[47,83.33],
-            "marker":{
-                "lineWidth":2,
-                "fillColor":"black",
-            }
-        }
-    ]
+# Basic chart
+options = {
+    "title": {"text": "My Chart"},
+    "series": [{"data": [1, 2, 3, 4, 5]}]
 }
 
-hct.streamlit_highcharts(chart_def,640) #640 is the chart height
-#The component bundles some sample chart definitions, from SAMPLE1 to ...SAMPLE10
-hct.streamlit_highcharts(hct.SAMPLE1,640) #640 is the chart height
+streamlit_highcharts(options, height=400)
 
+# Stock chart
+stock_options = {
+    "rangeSelector": {"selected": 1},
+    "title": {"text": "Stock Price"},
+    "series": [{
+        "name": "Price",
+        "data": [[1609459200000, 100], [1609545600000, 102]]
+    }]
+}
 
+streamlit_highcharts(stock_options, height=400, chart_type="stock")
+```
+
+## Configuration
+
+### Managing Highcharts Modules
+
+1. Edit `modules.json`:
+   - Add module names to the `modules` array
+   - Update version and URLs if needed
+2. Rebuild assets:
+   ```sh
+   python build_assets.py
+   ```
+
+### Changing Highcharts Version
+
+Update the URLs in `modules.json`:
+
+```json
+"sources": {
+  "highcharts": "https://code.highcharts.com/zips/Highcharts-12.5.0.zip",
+  "highcharts-stock": "https://code.highcharts.com/zips/Highcharts-Stock-12.5.0.zip"
+}
+```
+
+Then run `python build_assets.py`.
+
+## API Reference
+
+### streamlit_highcharts()
+
+```python
+streamlit_highcharts(
+    options,
+    height=410,
+    chart_type="chart",
+    key=None
+)
+```
+
+**Parameters:**
+- `options` (dict): Highcharts chart configuration
+- `height` (int): Chart height in pixels
+- `chart_type` (str): `"chart"` for regular charts, `"stock"` for stock charts
+- `key` (str): Optional unique key for the component
+
+**Returns:**
+- Component value
+
+## Chart Configuration
+
+For chart definitions, refer to [Highcharts demos](https://www.highcharts.com/demo).
+
+**Tips for converting JavaScript to Python:**
+- Use double quotes for all keys
+- Replace `true`/`false` with `True`/`False`
+- Quote `null` values as `"null"`
+- Remove JavaScript functions
+- Make data dynamic

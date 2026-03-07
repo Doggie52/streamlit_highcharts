@@ -1,0 +1,34 @@
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[project]
+name = "streamlit-highcharts"
+version = "1.0.0"
+description = "Simple wrapper for Highcharts JS libs"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Anthony Alteirac", email = "anthony@alteirac.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "streamlit>=1.2",
+    "jinja2",
+]
+
+[project.urls]
+Homepage = "https://github.com/anthonyalteirac/streamlit-highcharts"
+Repository = "https://github.com/anthonyalteirac/streamlit-highcharts"
+Issues = "https://github.com/anthonyalteirac/streamlit-highcharts/issues"
