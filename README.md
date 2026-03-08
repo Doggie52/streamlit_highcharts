@@ -12,9 +12,9 @@ This is a fork of [aalteirac/streamlit_highcharts](https://github.com/aalteirac/
 
 ## Installation
 
-1. Clone the repository
+1. Clone the repository and install venv with `uv sync`
 2. Edit `modules.json`
-3. Run `python build_assets.py`
+3. Run `uv run build_assets.py`
 
 ## Quick Start
 
@@ -52,7 +52,7 @@ streamlit_highcharts(stock_options, height=400, chart_type="stock")
    - Update version and URLs if needed
 2. Rebuild assets:
    ```sh
-   python build_assets.py
+   uv run build_assets.py
    ```
 
 ### Changing Highcharts Version
@@ -65,4 +65,4 @@ Update the URLs in `modules.json`:
 }
 ```
 
-Then run `python build_assets.py`.
+Then run `uv run build_assets.py`.
