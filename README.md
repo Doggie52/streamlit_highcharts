@@ -4,6 +4,7 @@ A Streamlit component for Highcharts with dynamic module management.
 
 This is a fork of [aalteirac/streamlit_highcharts](https://github.com/aalteirac/streamlit_highcharts) with the following new features:
  * Support Highcharts Stock charts (pass `chart_type="stock"` to `streamlit_highcharts`)
+ * Support passing custom javascript into the chart options (by encapsulating it between `%JS%` and `%/JS%` tags)
  * Local Highcharts javascript includes (to avoid CDN fair usage violation)
  * User-specified selection of Highcharts version to download
  * User-specified selection of Highcharts modules to include

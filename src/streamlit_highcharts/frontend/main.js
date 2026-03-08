@@ -2,6 +2,31 @@ function sendValue(value) {
   Streamlit.setComponentValue(value)
 }
 
+function parseJSFunctions(obj) {
+    // Recursively walk through the object
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            // If the value is a string starting with %JS% and ending with %/JS%
+            if (typeof obj[key] === 'string' &&
+                obj[key].startsWith('%JS%') &&
+                obj[key].endsWith('%/JS%')) {
+
+                // Extract the function body between the markers
+                const funcBody = obj[key].slice(4, -5).trim();
+
+                // Use eval to convert the string to a function
+                // Note: Be VERY careful with eval - only use if you trust the source completely
+                obj[key] = new Function('return ' + funcBody)();
+            }
+            // If the value is an object or array, recursively parse
+            else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                parseJSFunctions(obj[key]);
+            }
+        }
+    }
+    return obj;
+}
+
 function createChart(chartType, options) {
   try {
     if (chartType === "stock") {
@@ -21,6 +46,9 @@ let pendingRenders = [];
 
 function onRender(event) {
   const {options, height, chart_type, asset_urls} = event.detail.args
+
+  // Parse and convert any marked JavaScript functions
+  const processedOptions = parseJSFunctions(JSON.parse(JSON.stringify(options)));
   
   // Set up the container
   Streamlit.setFrameHeight(height + 20)
@@ -35,7 +63,7 @@ function onRender(event) {
     container.innerHTML = "";
     
     // Create the new chart
-    const chart = createChart(chart_type, options);
+    const chart = createChart(chart_type, processedOptions);
     if (chart) {
       console.log('Chart created successfully');
     } else {
