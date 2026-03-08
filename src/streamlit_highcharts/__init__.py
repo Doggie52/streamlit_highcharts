@@ -25,7 +25,7 @@ def get_asset_url(asset_name: str) -> str:
         # Asset is available in frontend/highcharts directory
         return f"./highcharts/{asset_name}"
 
-    raise ValueError(f"{asset_name} not found")
+    raise ValueError(f"{asset_name} not found locally. Did you run `build_assets.py`?")
 
 
 _component_func = components.declare_component("streamlit_highcharts", path=str(frontend_dir))

@@ -20,22 +20,34 @@ function loadHighchartsAssets(assetUrls, callback) {
         });
     }
     
-    // Load all scripts in parallel
-    const loadPromises = scripts.map(scriptName => {
-        const url = assetUrls[scriptName];
-        if (url && url !== '') {
-            return loadScript(url, scriptName).catch(err => {
-                console.warn(`Failed to load ${scriptName}:`, err);
-            });
+    // Load scripts in series (sequentially)
+    function loadScriptsSequentially(scriptArray, index = 0) {
+        if (index >= scriptArray.length) {
+            console.log('All Highcharts assets loaded');
+            if (callback) callback();
+            return;
         }
-        return Promise.resolve();
-    });
+        
+        const scriptName = scriptArray[index];
+        const url = assetUrls[scriptName];
+        
+        if (url && url !== '') {
+            console.log(`Loading ${scriptName}...`);
+            loadScript(url, scriptName)
+                .then(() => {
+                    console.log(`Loaded ${scriptName}`);
+                    loadScriptsSequentially(scriptArray, index + 1);
+                })
+                .catch(err => {
+                    console.warn(`Failed to load ${scriptName}:`, err);
+                    // Continue with next script even if this one failed
+                    loadScriptsSequentially(scriptArray, index + 1);
+                });
+        } else {
+            // Skip empty URLs and continue
+            loadScriptsSequentially(scriptArray, index + 1);
+        }
+    }
     
-    Promise.all(loadPromises).then(() => {
-        console.log('All Highcharts assets loaded');
-        if (callback) callback();
-    }).catch(err => {
-        console.error('Error loading Highcharts assets:', err);
-        if (callback) callback();
-    });
+    loadScriptsSequentially(scripts);
 }
