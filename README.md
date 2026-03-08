@@ -62,41 +62,7 @@ Update the URLs in `modules.json`:
 ```json
 "sources": {
   "highcharts": "https://code.highcharts.com/zips/Highcharts-12.5.0.zip",
-  "highcharts-stock": "https://code.highcharts.com/zips/Highcharts-Stock-12.5.0.zip"
 }
 ```
 
 Then run `python build_assets.py`.
-
-## API Reference
-
-### streamlit_highcharts()
-
-```python
-streamlit_highcharts(
-    options,
-    height=410,
-    chart_type="chart",
-    key=None
-)
-```
-
-**Parameters:**
-- `options` (dict): Highcharts chart configuration
-- `height` (int): Chart height in pixels
-- `chart_type` (str): `"chart"` for regular charts, `"stock"` for stock charts
-- `key` (str): Optional unique key for the component
-
-**Returns:**
-- Component value
-
-## Chart Configuration
-
-For chart definitions, refer to [Highcharts demos](https://www.highcharts.com/demo).
-
-**Tips for converting JavaScript to Python:**
-- Use double quotes for all keys
-- Replace `true`/`false` with `True`/`False`
-- Quote `null` values as `"null"`
-- Remove JavaScript functions
-- Make data dynamic
